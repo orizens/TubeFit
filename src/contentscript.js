@@ -54,5 +54,5 @@ chrome.extension.onRequest.addListener(
 	else
 	  sendResponse({}); // snub them.
   });
-		  
+
 chrome.extension.sendRequest({'action': 'autoFit'}, handleRequest);

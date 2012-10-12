@@ -5,7 +5,7 @@
 
 	"description": "Autofits youtube videos to the browser's size, scrolls into view, keeps the page and its functionality. Works with playlists.",
 	"background": {
-		"page": "background.html"
+		"scripts": [ "background.js" ]
 	},
 
 	"page_action": {
@@ -24,7 +24,7 @@
 
 		"js": [ "contentscript.js" ],
 		"run_at": "document_idle",
-		"all_frames": false
+		"all_frames": true
 	}],
 
 	"icons": {
