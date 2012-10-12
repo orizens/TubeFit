@@ -1,0 +1,37 @@
+{
+	"name": "TubeFit",
+	"version": "1.0",
+	"manifest_version": 2,
+
+	"description": "Autofits youtube videos to the browser's size, scrolls into view, keeps the page and its functionality. Works with playlists.",
+	"background": {
+		"page": "background.html"
+	},
+
+	"page_action": {
+		"default_icon": "youtube-16.png",
+		"default_title": "Turn on/off TubeFit"
+	},
+
+	"permissions": ["tabs"],
+	"content_scripts": [{
+		"matches": [
+			"http://youtube.com/*", 
+			"http://www.youtube.com/*", 
+			"https://youtube.com/*", 
+			"https://www.youtube.com/*"
+		],
+
+		"js": [ "contentscript.js" ],
+		"run_at": "document_idle",
+		"all_frames": false
+	}],
+
+	"icons": {
+		"16": "youtube-16.png",
+		"48": "youtube-48.png",
+		"128": "youtube-128.png"
+	},
+
+	"update_url": "https://raw.github.com/orizens/TubeFit/master/updates/TubeFit-updates.xml"
+}

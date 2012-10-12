@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
- * Copyright (c) 2011 Oren Farchi. All rights reserved.  Use of this
+ * Copyright (c) 2012 Oren Farhi. All rights reserved.  Use of this
  * source code is governed by a BSD-style license that can be found in the
  * LICENSE file.
 -->
@@ -10,12 +10,13 @@
       // Called when a message is passed.  We assume that the content script
       // wants to show the page action.
 	  var fullTubeIsEnabled;
+	  var storage = window.localStorage;
 	  function initFullTube(){
-		  if (window.localStorage) {
-			if (window.localStorage.fullTubeIsEnabled != "") {
-				fullTubeIsEnabled = window.localStorage.fullTubeIsEnabled;
+		  if (storage) {
+			if (storage.fullTubeIsEnabled != "") {
+				fullTubeIsEnabled = storage.fullTubeIsEnabled;
 			} else {
-				window.localStorage.fullTubeIsEnabled = "true";
+				storage.fullTubeIsEnabled = "true";
 				fullTubeIsEnabled = "true";
 			}
 		  }
@@ -26,7 +27,7 @@
         // was on.
 		initFullTube();
 		chrome.pageAction.show(sender.tab.id);
-		if (window.localStorage.fullTubeIsEnabled == "false")
+		if (storage.fullTubeIsEnabled == "false")
 			chrome.pageAction.setIcon({tabId: sender.tab.id, path: 'youtube-16-disabled.png'});
         // Return nothing to let the connection be cleaned up.
         sendResponse({});
@@ -35,22 +36,21 @@
 	  function onIconClick (tab) {
 		if (fullTubeIsEnabled == "true") {
 			chrome.pageAction.setIcon({tabId: tab.id, path: 'youtube-16-disabled.png'});
-			window.localStorage.fullTubeIsEnabled = "false";
+			storage.fullTubeIsEnabled = "false";
 			fullTubeIsEnabled = "false";
 		}
 		else {
 			chrome.pageAction.setIcon({tabId: tab.id, path: 'youtube-16.png'});
-			window.localStorage.fullTubeIsEnabled = "true";
+			storage.fullTubeIsEnabled = "true";
 			fullTubeIsEnabled = "true";
 		}
-		//chrome.tabs.executeScript(null, {file: "contentscript.js"});
 		chrome.tabs.sendRequest(tab.id, {'action': 'toggleAutoFit', 'enableAutoFit': fullTubeIsEnabled});
 	  }
 	  
 	  chrome.extension.onRequest.addListener(
 		  function(request, sender, sendResponse) {
 			if (request.action == 'autoFit')
-			  sendResponse({'enableAutoFit': window.localStorage.fullTubeIsEnabled});
+			  sendResponse({'enableAutoFit': storage.fullTubeIsEnabled});
 			else
 			  sendResponse({}); // snub them.
 		  });
